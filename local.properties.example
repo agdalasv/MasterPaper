@@ -1,0 +1,3 @@
+# Store your sensitive data here - DO NOT commit this file
+GITHUB_TOKEN=your_github_token_here
+API_BASE_URL=https://api.github.com

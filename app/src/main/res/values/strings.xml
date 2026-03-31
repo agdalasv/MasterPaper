@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">MasterPaper</string>
+    <string name="live_wallpaper_description">Fondos de pantalla con efecto parallax usando el giroscopio</string>
+</resources>
