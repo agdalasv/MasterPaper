@@ -1,13 +1,13 @@
 package com.masterpaper.ui.navigation
 
+import android.os.Build
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Category
 import androidx.compose.material.icons.filled.Home
@@ -30,7 +30,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.blur
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
@@ -129,40 +129,18 @@ fun MainScaffold(navController: NavHostController) {
             }
         },
         bottomBar = {
-            NavigationBar(
-                containerColor = MaterialTheme.colorScheme.surface,
-                contentColor = MaterialTheme.colorScheme.onSurface
-            ) {
-                bottomNavItems.forEach { item ->
-                    val selected = currentRoute == item.route
-                    NavigationBarItem(
-                        icon = {
-                            Icon(
-                                imageVector = if (selected) item.selectedIcon else item.unselectedIcon,
-                                contentDescription = item.title
-                            )
-                        },
-                        label = { Text(item.title) },
-                        selected = selected,
-                        onClick = {
-                            if (currentRoute != item.route) {
-                                navController.navigate(item.route) {
-                                    popUpTo(Screen.Home.route) {
-                                        saveState = true
-                                    }
-                                    launchSingleTop = true
-                                    restoreState = true
-                                }
-                            }
-                        },
-                        colors = NavigationBarItemDefaults.colors(
-                            selectedIconColor = MaterialTheme.colorScheme.primary,
-                            selectedTextColor = MaterialTheme.colorScheme.primary,
-                            indicatorColor = MaterialTheme.colorScheme.primaryContainer
-                        )
-                    )
+            GlassBottomBar(
+                currentRoute = currentRoute,
+                onNavigate = { route ->
+                    navController.navigate(route) {
+                        popUpTo(Screen.Home.route) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
                 }
-            }
+            )
         }
     ) { innerPadding ->
         NavHost(
@@ -207,24 +185,36 @@ fun MainScaffold(navController: NavHostController) {
 
 @Composable
 fun GlassTopBar(title: String) {
-    Column(
+    Box(
         modifier = Modifier
             .fillMaxWidth()
             .statusBarsPadding()
-            .background(
-                Brush.horizontalGradient(
-                    colors = listOf(
-                        Color(0x801976D2),
-                        Color(0x401976D2),
-                        Color(0x801976D2)
-                    )
-                )
-            )
+            .height(44.dp)
     ) {
         Box(
             modifier = Modifier
-                .fillMaxWidth()
-                .height(44.dp)
+                .fillMaxSize()
+                .background(
+                    Brush.horizontalGradient(
+                        colors = listOf(
+                            Color(0xCC1976D2),
+                            Color(0xE61976D2),
+                            Color(0xCC1976D2)
+                        )
+                    )
+                )
+                .then(
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                        Modifier.blur(25.dp)
+                    } else {
+                        Modifier
+                    }
+                )
+        )
+        
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
                 .padding(horizontal = 16.dp),
             contentAlignment = androidx.compose.ui.Alignment.CenterStart
         ) {
@@ -234,6 +224,65 @@ fun GlassTopBar(title: String) {
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold
             )
+        }
+    }
+}
+
+@Composable
+fun GlassBottomBar(currentRoute: String?, onNavigate: (String) -> Unit) {
+    Box(
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(
+                    Brush.verticalGradient(
+                        colors = listOf(
+                            Color(0x80E8E8E8),
+                            Color(0xB3E8E8E8),
+                            Color(0xCCE8E8E8)
+                        )
+                    )
+                )
+                .then(
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                        Modifier.blur(25.dp)
+                    } else {
+                        Modifier
+                    }
+                )
+        )
+        
+        NavigationBar(
+            containerColor = Color.Transparent,
+            contentColor = MaterialTheme.colorScheme.onSurface
+        ) {
+            bottomNavItems.forEach { item ->
+                val selected = currentRoute == item.route
+                NavigationBarItem(
+                    icon = {
+                        Icon(
+                            imageVector = if (selected) item.selectedIcon else item.unselectedIcon,
+                            contentDescription = item.title
+                        )
+                    },
+                    label = { Text(item.title) },
+                    selected = selected,
+                    onClick = {
+                        if (currentRoute != item.route) {
+                            onNavigate(item.route)
+                        }
+                    },
+                    colors = NavigationBarItemDefaults.colors(
+                        selectedIconColor = MaterialTheme.colorScheme.primary,
+                        selectedTextColor = MaterialTheme.colorScheme.primary,
+                        indicatorColor = MaterialTheme.colorScheme.primaryContainer,
+                        unselectedIconColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f),
+                        unselectedTextColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
+                    )
+                )
+            }
         }
     }
 }

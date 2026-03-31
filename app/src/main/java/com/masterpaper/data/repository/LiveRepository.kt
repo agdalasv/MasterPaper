@@ -25,7 +25,6 @@ class LiveRepository {
     private val client = OkHttpClient.Builder()
         .addInterceptor { chain ->
             val request = chain.request().newBuilder()
-                .addHeader("Authorization", "Bearer $token")
                 .addHeader("Accept", "application/vnd.github+json")
                 .build()
             chain.proceed(request)
@@ -45,7 +44,15 @@ class LiveRepository {
             val request = Request.Builder().url(url).build()
 
             val response = client.newCall(request).execute()
+            if (!response.isSuccessful) {
+                return@withContext emptyList()
+            }
+            
             val body = response.body?.string() ?: return@withContext emptyList()
+            
+            if (body.contains("\"message\"")) {
+                return@withContext emptyList()
+            }
 
             val type = object : TypeToken<List<GithubContent>>() {}.type
             val contents: List<GithubContent> = gson.fromJson(body, type)

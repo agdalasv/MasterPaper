@@ -5,6 +5,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -27,6 +28,20 @@ class PreferencesRepository(private val context: Context) {
 
     val isNotificationsEnabled: Flow<Boolean> = context.dataStore.data.map { preferences ->
         preferences[notificationsKey] ?: false
+    }
+
+    fun getAppVersion(): Flow<String> = context.dataStore.data.map { preferences ->
+        preferences[stringPreferencesKey("app_version")] ?: "1.0"
+    }
+
+    fun getString(key: String): Flow<String> = context.dataStore.data.map { preferences ->
+        preferences[stringPreferencesKey(key)] ?: ""
+    }
+
+    suspend fun saveString(key: String, value: String) {
+        context.dataStore.edit { preferences ->
+            preferences[stringPreferencesKey(key)] = value
+        }
     }
 
     suspend fun setDarkMode(enabled: Boolean) {

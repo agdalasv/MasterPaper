@@ -38,6 +38,8 @@ fun WallpaperCard(
             model = ImageRequest.Builder(LocalContext.current)
                 .data(wallpaper.thumbnailUrl)
                 .crossfade(true)
+                .memoryCacheKey(wallpaper.id)
+                .diskCacheKey(wallpaper.id)
                 .build(),
             contentDescription = wallpaper.name,
             contentScale = ContentScale.Crop,

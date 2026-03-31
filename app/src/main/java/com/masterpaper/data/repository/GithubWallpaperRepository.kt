@@ -25,7 +25,6 @@ class GithubWallpaperRepository : WallpaperRepository {
     private val client = OkHttpClient.Builder()
         .addInterceptor { chain ->
             val request = chain.request().newBuilder()
-                .addHeader("Authorization", "Bearer $token")
                 .addHeader("Accept", "application/vnd.github+json")
                 .build()
             chain.proceed(request)
@@ -80,25 +79,38 @@ class GithubWallpaperRepository : WallpaperRepository {
     }.flowOn(Dispatchers.IO)
 
     private suspend fun fetchCategories(): List<Category> = withContext(Dispatchers.IO) {
-        val url = "$baseUrl/repos/$owner/$repo/contents"
-        val request = Request.Builder().url(url).build()
-        
-        val response = client.newCall(request).execute()
-        val body = response.body?.string() ?: return@withContext emptyList()
-        
-        val type = object : TypeToken<List<GithubContent>>() {}.type
-        val contents: List<GithubContent> = gson.fromJson(body, type)
-        
-        contents
-            .filter { it.type == "dir" && it.name != "ring" && it.name != "live" }
-            .map { content ->
-                Category(
-                    id = content.name,
-                    name = content.name.replace("_", " ").replaceFirstChar { it.uppercase() },
-                    imageUrl = "$rawBaseUrl/${content.name}/thumbnail.jpg",
-                    wallpaperCount = 0
-                )
+        try {
+            val url = "$baseUrl/repos/$owner/$repo/contents"
+            val request = Request.Builder().url(url).build()
+            
+            val response = client.newCall(request).execute()
+            if (!response.isSuccessful) {
+                return@withContext emptyList()
             }
+            
+            val body = response.body?.string() ?: return@withContext emptyList()
+            
+            if (body.contains("\"message\"")) {
+                return@withContext emptyList()
+            }
+            
+            val type = object : TypeToken<List<GithubContent>>() {}.type
+            val contents: List<GithubContent> = gson.fromJson(body, type)
+            
+            contents
+                .filter { it.type == "dir" && it.name != "ring" && it.name != "live" }
+                .map { content ->
+                    Category(
+                        id = content.name,
+                        name = content.name.replace("_", " ").replaceFirstChar { it.uppercase() },
+                        imageUrl = "$rawBaseUrl/${content.name}/thumbnail.jpg",
+                        wallpaperCount = 0
+                    )
+                }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            emptyList()
+        }
     }
 
     private suspend fun fetchWallpapersFromCategory(categoryName: String): List<Wallpaper> = withContext(Dispatchers.IO) {
@@ -107,7 +119,15 @@ class GithubWallpaperRepository : WallpaperRepository {
             val request = Request.Builder().url(url).build()
             
             val response = client.newCall(request).execute()
+            if (!response.isSuccessful) {
+                return@withContext emptyList()
+            }
+            
             val body = response.body?.string() ?: return@withContext emptyList()
+            
+            if (body.contains("\"message\"")) {
+                return@withContext emptyList()
+            }
             
             val type = object : TypeToken<List<GithubContent>>() {}.type
             val contents: List<GithubContent> = gson.fromJson(body, type)
