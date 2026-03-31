@@ -129,6 +129,21 @@ Este proyecto está bajo la Licencia MIT. Consulta el archivo [LICENSE](LICENSE)
 
 ---
 
+## Invita un Café ☕
+
+¡Si te gusta este proyecto y quieres apoiar el desarrollo, puedes invitarme un café!
+
+### Bitcoin (BTC)
+```
+3L8f3v6BWwL7KBcb8AMZQ2bpE3ACne2EUf
+```
+*Haz clic para copiar*
+
+### Contacto
+📧 **Email**: agdala.sv@gmail.com
+
+---
+
 ## Descargas
 
 📥 [Descargar APK](https://agdalasv.github.io/MasterPaper/)

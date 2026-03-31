@@ -76,6 +76,45 @@
             color: #00ff88;
             margin-right: 10px;
         }
+        .donate {
+            margin-top: 40px;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .donate h2 {
+            color: #00d9ff;
+            margin-bottom: 20px;
+        }
+        .btc-address {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px 20px;
+            border-radius: 10px;
+            font-family: monospace;
+            font-size: 0.9rem;
+            color: #00ff88;
+            cursor: pointer;
+            transition: background 0.3s;
+            word-break: break-all;
+        }
+        .btc-address:hover {
+            background: rgba(0, 255, 136, 0.1);
+        }
+        .btc-address:active {
+            background: rgba(0, 255, 136, 0.2);
+        }
+        .email {
+            margin-top: 20px;
+            color: #aaa;
+        }
+        .email a {
+            color: #00d9ff;
+            text-decoration: none;
+        }
+        .email a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
@@ -100,6 +139,25 @@
                 <li>Dark mode support</li>
             </ul>
         </div>
+        
+        <div class="donate">
+            <h2>☕ Invita un Café</h2>
+            <div class="btc-address" onclick="copyAddress()" title="Click to copy">
+                3L8f3v6BWwL7KBcb8AMZQ2bpE3ACne2EUf
+            </div>
+            <div class="email">
+                <p>📧 Contacto: <a href="mailto:agdala.sv@gmail.com">agdala.sv@gmail.com</a></p>
+            </div>
+        </div>
     </div>
+    
+    <script>
+        function copyAddress() {
+            const address = "3L8f3v6BWwL7KBcb8AMZQ2bpE3ACne2EUf";
+            navigator.clipboard.writeText(address).then(() => {
+                alert("Dirección BTC copiada al portapapeles!");
+            });
+        }
+    </script>
 </body>
 </html>
