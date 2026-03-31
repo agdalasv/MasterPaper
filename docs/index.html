@@ -115,6 +115,30 @@
         .email a:hover {
             text-decoration: underline;
         }
+        .screenshots {
+            margin-top: 40px;
+        }
+        .screenshots h2 {
+            color: #00d9ff;
+            margin-bottom: 20px;
+        }
+        .screenshots-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+        }
+        .screenshots-grid img {
+            width: 120px;
+            height: auto;
+            border-radius: 10px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s, border-color 0.3s;
+        }
+        .screenshots-grid img:hover {
+            transform: scale(1.05);
+            border-color: #00d9ff;
+        }
     </style>
 </head>
 <body>
@@ -138,6 +162,18 @@
                 <li>Preview and set wallpapers</li>
                 <li>Dark mode support</li>
             </ul>
+        </div>
+        
+        <div class="screenshots">
+            <h2>Screenshots</h2>
+            <div class="screenshots-grid">
+                <img src="1.jpg" alt="Screenshot 1">
+                <img src="2.jpg" alt="Screenshot 2">
+                <img src="3.jpg" alt="Screenshot 3">
+                <img src="4.jpg" alt="Screenshot 4">
+                <img src="5.jpg" alt="Screenshot 5">
+                <img src="6.jpg" alt="Screenshot 6">
+            </div>
         </div>
         
         <div class="donate">
