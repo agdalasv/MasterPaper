@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MasterPaper - Android Live Wallpaper App</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+        }
+        .container {
+            text-align: center;
+            padding: 40px;
+            max-width: 600px;
+        }
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, #00d9ff, #00ff88);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        p {
+            font-size: 1.2rem;
+            color: #aaa;
+            margin-bottom: 40px;
+        }
+        .download-btn {
+            display: inline-block;
+            padding: 18px 50px;
+            background: linear-gradient(90deg, #00d9ff, #00ff88);
+            color: #1a1a2e;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .download-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(0, 217, 255, 0.4);
+        }
+        .version {
+            margin-top: 30px;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        .features {
+            margin-top: 50px;
+            text-align: left;
+        }
+        .features h2 {
+            color: #00d9ff;
+            margin-bottom: 20px;
+        }
+        .features ul {
+            list-style: none;
+        }
+        .features li {
+            padding: 10px 0;
+            color: #ccc;
+        }
+        .features li::before {
+            content: "✓";
+            color: #00ff88;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>MasterPaper</h1>
+        <p>Android Live Wallpaper App with Jetpack Compose</p>
+        
+        <a href="app-release.apk" class="download-btn" download>
+            Download APK
+        </a>
+        
+        <div class="version">Version 1.0</div>
+        
+        <div class="features">
+            <h2>Features</h2>
+            <ul>
+                <li>Browse wallpapers from GitHub</li>
+                <li>Live wallpapers support</li>
+                <li>Ringtone downloads</li>
+                <li>Categories browsing</li>
+                <li>Preview and set wallpapers</li>
+                <li>Dark mode support</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
